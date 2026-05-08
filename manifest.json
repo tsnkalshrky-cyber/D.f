@@ -1,0 +1,23 @@
+
+{
+  "name": "Daftar Pro - دفتر الحسابات المحترف",
+  "short_name": "Daftar Pro",
+  "description": "إدارة مالية متكاملة لمتجرك مع دعم العملات والذكاء الاصطناعي",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#F5F8FB",
+  "theme_color": "#5E9BCD",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/appicon/192/192",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://picsum.photos/seed/appicon/512/512",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
