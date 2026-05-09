@@ -1,55 +1,135 @@
-import Link from 'next/link';
+"use client";
+
+import { MOCK_CURRENCY_BALANCES } from '@/lib/mock-data';
+import { Card } from '@/components/ui/card';
+import { TrendingUp, TrendingDown, Wallet, PlusCircle, UserPlus, Sparkles, ArrowUpRight, ArrowDownLeft, ChevronLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Wallet, ShieldCheck, Zap, Sparkles } from 'lucide-react';
+import Link from 'next/link';
+import { BottomNav } from '@/components/layout/BottomNav';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from '@/hooks/use-toast';
 
-export default function LandingPage() {
+export default function DashboardPage() {
+  const [isAddingAccount, setIsAddingAccount] = useState(false);
+
   return (
-    <div className="flex flex-col min-h-screen bg-[#F5F8FB] overflow-hidden relative">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 left-0 w-full h-[35%] bg-primary rounded-b-[40px] -z-10 shadow-lg" />
-      
-      <main className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-6">
-        <div className="space-y-3 pt-4">
-          <div className="w-16 h-16 bg-white rounded-[24px] shadow-2xl mx-auto flex items-center justify-center relative group active:scale-95 transition-transform">
-             <Wallet className="h-8 w-8 text-primary" />
-             <div className="absolute -top-1 -right-1 bg-accent text-white p-1 rounded-lg shadow-lg border-2 border-white">
-                <Sparkles className="h-3 w-3" />
-             </div>
+    <div className="flex flex-col min-h-screen bg-background pb-16 overflow-x-hidden">
+      <header className="p-4 gradient-primary text-primary-foreground shadow-md rounded-b-[24px] relative">
+        <div className="flex justify-between items-center mb-4 relative z-10">
+          <div className="space-y-0.5">
+            <h1 className="text-base font-black tracking-tight">دفتر برو</h1>
+            <p className="text-white/70 text-[8px] font-medium">إدارة مالية ذكية</p>
           </div>
-          <div className="space-y-1">
-            <h1 className="text-2xl font-black text-white font-headline tracking-tight">دفتر الحسابات</h1>
-            <h2 className="text-base font-bold text-white/90">المحترف - Daftar Pro</h2>
+          <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center">
+            <Wallet className="h-4 w-4" />
           </div>
         </div>
-
-        <div className="w-full max-w-[300px] bg-white/95 backdrop-blur-md p-5 rounded-[30px] shadow-2xl border border-white/50 space-y-5">
-          <p className="text-slate-600 text-xs leading-relaxed font-medium">
-            أدر حساباتك، ديونك، وعملائك بدقة احترافية مع دعم كامل للعملات والذكاء الاصطناعي.
+        
+        <div className="relative z-10 space-y-2">
+          <p className="text-[9px] font-bold opacity-80 flex items-center gap-1">
+             <Sparkles className="h-2.5 w-2.5 text-accent" />
+             إجمالي الأرصدة الحالية
           </p>
-          
+          <div className="grid grid-cols-3 gap-1.5">
+            {MOCK_CURRENCY_BALANCES.map((bal) => (
+              <div key={bal.currency} className="bg-white/10 backdrop-blur-md p-1.5 rounded-xl border border-white/10">
+                <div className="flex justify-between items-start mb-0.5">
+                   <p className="text-[7px] font-black bg-white/20 px-1 py-0.5 rounded-sm">{bal.currency}</p>
+                   {bal.net >= 0 ? <ArrowUpRight className="h-2 w-2 text-green-300" /> : <ArrowDownLeft className="h-2 w-2 text-red-300" />}
+                </div>
+                <p className={cn("text-xs font-black leading-none", bal.net >= 0 ? "text-green-300" : "text-red-300")}>
+                  {Math.abs(bal.net).toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <main className="p-3 space-y-3">
+        <section className="grid grid-cols-2 gap-2">
+          <Button onClick={() => setIsAddingAccount(true)} className="h-14 gradient-accent rounded-xl flex flex-col gap-0.5 shadow-sm border-none">
+            <UserPlus className="h-3.5 w-3.5" />
+            <span className="font-bold text-[9px]">حساب جديد</span>
+          </Button>
+          <Button asChild className="h-14 gradient-primary rounded-xl flex flex-col gap-0.5 shadow-sm border-none">
+            <Link href="/accounts">
+              <PlusCircle className="h-3.5 w-3.5" />
+              <span className="font-bold text-[9px]">إضافة حركة</span>
+            </Link>
+          </Button>
+        </section>
+
+        <section className="space-y-2">
+          <div className="flex justify-between items-center px-1">
+            <h2 className="text-xs font-black text-slate-800">الملخص المالي</h2>
+            <Link href="/reports" className="text-primary text-[9px] font-black flex items-center gap-0.5">التقارير <ChevronLeft className="h-2 w-2" /></Link>
+          </div>
           <div className="grid grid-cols-2 gap-2">
-             <div className="flex flex-col items-center gap-1 p-2 bg-primary/5 rounded-xl">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-                <span className="text-[9px] font-bold text-slate-700">أمان عالي</span>
-             </div>
-             <div className="flex flex-col items-center gap-1 p-2 bg-accent/5 rounded-xl">
-                <Zap className="h-4 w-4 text-accent" />
-                <span className="text-[9px] font-bold text-slate-700">إدخال سريع</span>
-             </div>
+            <Card className="border-none shadow-soft rounded-xl bg-white p-2.5 flex flex-col gap-1">
+              <TrendingUp className="h-3.5 w-3.5 text-leh" />
+              <p className="text-[8px] font-bold text-slate-400">إجمالي (لك)</p>
+              <p className="text-sm font-black text-leh">165,000</p>
+            </Card>
+            <Card className="border-none shadow-soft rounded-xl bg-white p-2.5 flex flex-col gap-1">
+              <TrendingDown className="h-3.5 w-3.5 text-alaih" />
+              <p className="text-[8px] font-bold text-slate-400">إجمالي (عليك)</p>
+              <p className="text-sm font-black text-alaih">121,250</p>
+            </Card>
           </div>
-
-          <div className="space-y-2 pt-1">
-            <Button asChild className="w-full h-11 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl shadow-lg border-none transition-all active:scale-95 text-sm">
-              <Link href="/dashboard">ابدأ الآن</Link>
-            </Button>
-            <Button variant="ghost" className="w-full h-9 text-slate-500 text-xs font-medium">إنشاء حساب جديد</Button>
-          </div>
-        </div>
-
-        <div className="text-slate-400 text-[9px] font-medium pt-2">
-          <p>© 2024 Daftar Pro. جميع الحقوق محفوظة</p>
-        </div>
+        </section>
       </main>
+
+      <Button 
+        onClick={() => setIsAddingAccount(true)}
+        className="fixed bottom-20 left-4 w-12 h-12 rounded-full gradient-primary text-white shadow-lg flex items-center justify-center active:scale-90 transition-all z-40"
+      >
+        <Plus className="h-6 w-6" />
+      </Button>
+
+      <Dialog open={isAddingAccount} onOpenChange={setIsAddingAccount}>
+        <DialogContent className="max-w-[92%] rounded-[20px] p-4">
+          <DialogHeader>
+            <DialogTitle className="text-right text-sm font-black">إضافة حساب جديد</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <div className="space-y-1">
+              <Label className="text-slate-500 font-bold text-[9px]">الاسم الكامل</Label>
+              <Input placeholder="أحمد محمد" className="h-9 rounded-lg text-xs bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-slate-500 font-bold text-[9px]">رقم الجوال</Label>
+              <Input placeholder="777XXXXXX" className="h-9 rounded-lg text-xs bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-primary font-bold text-[9px]">العملة الأساسية (تحدد مرة واحدة)</Label>
+              <Select defaultValue="YER">
+                <SelectTrigger className="h-9 rounded-lg bg-primary/5 font-bold text-xs">
+                  <SelectValue placeholder="اختر العملة" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="YER">ريال يمني (YER)</SelectItem>
+                  <SelectItem value="SAR">ريال سعودي (SAR)</SelectItem>
+                  <SelectItem value="USD">دولار أمريكي (USD)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button className="w-full h-10 rounded-lg gradient-primary font-black text-xs" onClick={() => {
+              setIsAddingAccount(false);
+              toast({ title: "تم الحفظ", description: "تمت إضافة الحساب بنجاح" });
+            }}>حفظ الحساب</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <BottomNav />
     </div>
   );
 }
