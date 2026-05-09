@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 50% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 207 54% 59%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 43 100% 50%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 75% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 207 54% 59%;
+    --radius: 0.75rem;
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground font-body;
+    direction: rtl;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 13px; /* حجم خط مدمج للأندرويد */
+  }
+}
+
+.shadow-soft {
+  box-shadow: 0 2px 8px -3px rgba(0, 0, 0, 0.05);
+}
+
+.text-leh { color: hsl(142 76% 36%); }
+.text-alaih { color: hsl(0 75% 51%); }
+
+.gradient-primary { background: linear-gradient(135deg, #5E9BCD 0%, #4A89B8 100%); }
+.gradient-accent { background: linear-gradient(135deg, #FFB600 0%, #FF9900 100%); }
+.gradient-success { background: linear-gradient(135deg, #339933 0%, #2D862D 100%); }
+.gradient-destructive { background: linear-gradient(135deg, #DF2626 0%, #C02020 100%); }
+
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 12px); }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
